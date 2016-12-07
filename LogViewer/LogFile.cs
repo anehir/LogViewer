@@ -74,7 +74,7 @@ namespace LogViewer
                 }
             }
             byte[] cleanStart = fileBuffer.SkipWhile(b => new UtfByte(b).UtfByteType == UtfByteType.Trailing).ToArray();
-            return System.Text.Encoding.UTF8.GetString(cleanStart);
+            return System.Text.Encoding.UTF8.GetString(cleanStart).Replace("\r\n", "\n");
         }
 
         private void ResetBuffer()

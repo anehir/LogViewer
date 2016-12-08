@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -18,14 +18,12 @@ namespace LogViewer
         public MainForm()
         {
             InitializeComponent();
+            searchCountToolStripLabel.Text = string.Empty;
+            viewerSplitContainer.Panel2Collapsed = true;
+            searchVisibleToolStripMenuItem.Checked = false;
         }
 
-        private void openButton_Click(object sender, EventArgs e)
-        {
-            OpenLogFile();
-        }
-
-        private void OpenLogFile()
+        private void OpenLogFile(string filePath)
         {
             try
             {
@@ -35,8 +33,8 @@ namespace LogViewer
                 }
                 searchResultsDataGridView.DataSource = null;
                 searchPatternTextBox.Text = string.Empty;
-                searchCountLabel.Text = string.Empty;
-                logFile = new LogFile(filePathTextBox.Text);
+                searchCountToolStripLabel.Text = string.Empty;
+                logFile = new LogFile(filePath);
                 pageCountTextBox.Text = logFile.PageCount.ToString();
                 pageNoNumericUpDown.Maximum = logFile.PageCount;
                 LoadPage(logFile.ReadOnePage());
@@ -126,24 +124,13 @@ namespace LogViewer
 
         private void filePathLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            RunSafely(() =>
-            {
-                using (var ofd = new OpenFileDialog())
-                {
-                    var result = ofd.ShowDialog();
-                    if (result == System.Windows.Forms.DialogResult.OK)
-                    {
-                        filePathTextBox.Text = ofd.FileName;
-                        OpenLogFile();
-                    }
-                }
-            });
+
         }
 
         private void gotoPageButton_Click(object sender, EventArgs e)
         {
             int pageNo = (int)pageNoNumericUpDown.Value;
-            if (pageNo > 0 && pageNo <= logFile.PageCount)
+            if (logFile != null && pageNo > 0 && pageNo <= logFile.PageCount)
             {
                 logFile.CurrentPage = pageNo;
                 LoadPage(logFile.ReadOnePage());
@@ -166,7 +153,7 @@ namespace LogViewer
         {
             var results = logFile.SearchWithinFile(searchPatternTextBox.Text);
             searchResultsDataGridView.DataSource = results;
-            searchCountLabel.Text = results.Count.ToString() + " results";
+            searchCountToolStripLabel.Text = results.Count.ToString() + " results";
         }
 
         private void searchResultsDataGridView_DoubleClick(object sender, EventArgs e)
@@ -215,15 +202,6 @@ namespace LogViewer
             }
         }
 
-        private void filePathTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                openButton.Focus();
-                openButton.PerformClick();
-            }
-        }
-
         private void contentRichTextBox_KeyDown_1(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.PageDown)
@@ -243,6 +221,29 @@ namespace LogViewer
                 gotoPageButton.PerformClick();
             }
         }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RunSafely(() =>
+            {
+                using (var ofd = new OpenFileDialog())
+                {
+                    ofd.CheckFileExists = true;
+                    ofd.Multiselect = false;
+                    var result = ofd.ShowDialog();
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        OpenLogFile(ofd.FileName);
+                    }
+                }
+            });
+        }
+
+        private void searchVisibleToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            viewerSplitContainer.Panel2Collapsed = !searchVisibleToolStripMenuItem.Checked;
+        }
+
 
     }
 }

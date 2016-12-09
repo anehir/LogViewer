@@ -48,6 +48,8 @@ namespace LogViewer
             this.viewerSplitContainer = new System.Windows.Forms.SplitContainer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.searchCountToolStripLabel = new System.Windows.Forms.ToolStripLabel();
+            this.PageNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Sample = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pageNoNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchResultsDataGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -103,7 +105,7 @@ namespace LogViewer
             this.gotoPageButton.Location = new System.Drawing.Point(1024, 0);
             this.gotoPageButton.Name = "gotoPageButton";
             this.gotoPageButton.Size = new System.Drawing.Size(79, 22);
-            this.gotoPageButton.TabIndex = 11;
+            this.gotoPageButton.TabIndex = 6;
             this.gotoPageButton.Text = "Go to Page";
             this.gotoPageButton.UseVisualStyleBackColor = true;
             this.gotoPageButton.Click += new System.EventHandler(this.gotoPageButton_Click);
@@ -126,6 +128,7 @@ namespace LogViewer
             this.pageCountTextBox.ReadOnly = true;
             this.pageCountTextBox.Size = new System.Drawing.Size(50, 20);
             this.pageCountTextBox.TabIndex = 13;
+            this.pageCountTextBox.TabStop = false;
             // 
             // pageNoNumericUpDown
             // 
@@ -138,7 +141,7 @@ namespace LogViewer
             0});
             this.pageNoNumericUpDown.Name = "pageNoNumericUpDown";
             this.pageNoNumericUpDown.Size = new System.Drawing.Size(50, 20);
-            this.pageNoNumericUpDown.TabIndex = 14;
+            this.pageNoNumericUpDown.TabIndex = 5;
             this.pageNoNumericUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -153,7 +156,7 @@ namespace LogViewer
             this.searchPatternTextBox.Location = new System.Drawing.Point(3, 3);
             this.searchPatternTextBox.Name = "searchPatternTextBox";
             this.searchPatternTextBox.Size = new System.Drawing.Size(1044, 20);
-            this.searchPatternTextBox.TabIndex = 15;
+            this.searchPatternTextBox.TabIndex = 8;
             this.searchPatternTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchPatternTextBox_KeyDown);
             // 
             // searchButton
@@ -162,24 +165,30 @@ namespace LogViewer
             this.searchButton.Location = new System.Drawing.Point(1053, 3);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(50, 20);
-            this.searchButton.TabIndex = 17;
+            this.searchButton.TabIndex = 9;
             this.searchButton.Text = "Search";
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // searchResultsDataGridView
             // 
+            this.searchResultsDataGridView.AllowUserToAddRows = false;
+            this.searchResultsDataGridView.AllowUserToDeleteRows = false;
             this.searchResultsDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchResultsDataGridView.BackgroundColor = System.Drawing.SystemColors.HighlightText;
             this.searchResultsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.searchResultsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.PageNo,
+            this.Sample});
             this.searchResultsDataGridView.Location = new System.Drawing.Point(3, 29);
             this.searchResultsDataGridView.Name = "searchResultsDataGridView";
             this.searchResultsDataGridView.ReadOnly = true;
             this.searchResultsDataGridView.RowHeadersVisible = false;
             this.searchResultsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.searchResultsDataGridView.Size = new System.Drawing.Size(1100, 123);
-            this.searchResultsDataGridView.TabIndex = 18;
+            this.searchResultsDataGridView.TabIndex = 10;
             this.searchResultsDataGridView.DoubleClick += new System.EventHandler(this.searchResultsDataGridView_DoubleClick);
             // 
             // contentRichTextBox
@@ -187,11 +196,12 @@ namespace LogViewer
             this.contentRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.contentRichTextBox.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.contentRichTextBox.Location = new System.Drawing.Point(3, 35);
             this.contentRichTextBox.Name = "contentRichTextBox";
             this.contentRichTextBox.ReadOnly = true;
             this.contentRichTextBox.Size = new System.Drawing.Size(1100, 400);
-            this.contentRichTextBox.TabIndex = 19;
+            this.contentRichTextBox.TabIndex = 7;
             this.contentRichTextBox.Text = "";
             this.contentRichTextBox.WordWrap = false;
             this.contentRichTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.contentRichTextBox_KeyDown_1);
@@ -213,12 +223,13 @@ namespace LogViewer
             this.openToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Text = "&File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -228,7 +239,7 @@ namespace LogViewer
             this.searchVisibleToolStripMenuItem});
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             this.searchToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.searchToolStripMenuItem.Text = "Search";
+            this.searchToolStripMenuItem.Text = "&Search";
             // 
             // searchVisibleToolStripMenuItem
             // 
@@ -236,7 +247,8 @@ namespace LogViewer
             this.searchVisibleToolStripMenuItem.CheckOnClick = true;
             this.searchVisibleToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.searchVisibleToolStripMenuItem.Name = "searchVisibleToolStripMenuItem";
-            this.searchVisibleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.searchVisibleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.searchVisibleToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.searchVisibleToolStripMenuItem.Text = "Search Visible";
             this.searchVisibleToolStripMenuItem.CheckedChanged += new System.EventHandler(this.searchVisibleToolStripMenuItem_CheckedChanged);
             // 
@@ -287,6 +299,24 @@ namespace LogViewer
             this.searchCountToolStripLabel.Name = "searchCountToolStripLabel";
             this.searchCountToolStripLabel.Size = new System.Drawing.Size(74, 22);
             this.searchCountToolStripLabel.Text = "searchCount";
+            // 
+            // PageNo
+            // 
+            this.PageNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.PageNo.DataPropertyName = "PageNo";
+            this.PageNo.HeaderText = "PageNo";
+            this.PageNo.Name = "PageNo";
+            this.PageNo.ReadOnly = true;
+            this.PageNo.Width = 71;
+            // 
+            // Sample
+            // 
+            this.Sample.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Sample.DataPropertyName = "Sample";
+            this.Sample.HeaderText = "Sample";
+            this.Sample.Name = "Sample";
+            this.Sample.ReadOnly = true;
+            this.Sample.Width = 67;
             // 
             // MainForm
             // 
@@ -339,6 +369,8 @@ namespace LogViewer
         private System.Windows.Forms.ToolStripLabel searchCountToolStripLabel;
         private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem searchVisibleToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PageNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Sample;
     }
 }
 

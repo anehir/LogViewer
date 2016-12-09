@@ -21,6 +21,7 @@ namespace LogViewer
             searchCountToolStripLabel.Text = string.Empty;
             viewerSplitContainer.Panel2Collapsed = true;
             searchVisibleToolStripMenuItem.Checked = false;
+            searchResultsDataGridView.AutoGenerateColumns = false;
         }
 
         private void OpenLogFile(string filePath)
@@ -151,9 +152,33 @@ namespace LogViewer
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            var results = logFile.SearchWithinFile(searchPatternTextBox.Text);
-            searchResultsDataGridView.DataSource = results;
-            searchCountToolStripLabel.Text = results.Count.ToString() + " results";
+            Cursor.Current = Cursors.WaitCursor;
+            RunSafely(() =>
+            {
+                ResetContentBackColor();
+                if (logFile != null)
+                {
+                    var results = logFile.SearchWithinFile(searchPatternTextBox.Text);
+                    searchResultsDataGridView.DataSource = results;
+                    searchCountToolStripLabel.Text = results.Count.ToString() + " results";
+                }
+            });
+            Cursor.Current = Cursors.Default;
+        }
+
+        private void ResetContentBackColor()
+        {
+            contentRichTextBox.SelectAll();
+            contentRichTextBox.SelectionBackColor = contentRichTextBox.BackColor;
+            contentRichTextBox.DeselectAll();
+        }
+
+        private void SetResultBackColor(SearchResult result)
+        {
+            contentRichTextBox.SelectionStart = result.Index;
+            contentRichTextBox.SelectionLength = result.Length;
+            contentRichTextBox.SelectionBackColor = Color.Yellow;
+            contentRichTextBox.SelectionLength = 0;
         }
 
         private void searchResultsDataGridView_DoubleClick(object sender, EventArgs e)
@@ -169,10 +194,7 @@ namespace LogViewer
                 pageNoNumericUpDown.Value = logFile.CurrentPage;
                 foreach (var result in FindAllResultsInThePage(results, index))
                 {
-                    contentRichTextBox.SelectionStart = result.Index;
-                    contentRichTextBox.SelectionLength = result.Length;
-                    contentRichTextBox.SelectionBackColor = Color.Yellow;
-                    contentRichTextBox.SelectionLength = 0;
+                    SetResultBackColor(result);
                 }
             }
         }
@@ -242,8 +264,12 @@ namespace LogViewer
         private void searchVisibleToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             viewerSplitContainer.Panel2Collapsed = !searchVisibleToolStripMenuItem.Checked;
+            if (!viewerSplitContainer.Panel2Collapsed)
+            {
+                searchPatternTextBox.Focus();
+                searchPatternTextBox.SelectAll();
+            }
         }
-
 
     }
 }

@@ -28,8 +28,8 @@ namespace LogViewer
         /// </summary>
         private void InitializeComponent()
         {
-            this.downButton = new System.Windows.Forms.Button();
-            this.upButton = new System.Windows.Forms.Button();
+            this.nextPageButton = new System.Windows.Forms.Button();
+            this.previousPageButton = new System.Windows.Forms.Button();
             this.endButton = new System.Windows.Forms.Button();
             this.homeButton = new System.Windows.Forms.Button();
             this.gotoPageButton = new System.Windows.Forms.Button();
@@ -39,6 +39,8 @@ namespace LogViewer
             this.searchPatternTextBox = new System.Windows.Forms.TextBox();
             this.searchButton = new System.Windows.Forms.Button();
             this.searchResultsDataGridView = new System.Windows.Forms.DataGridView();
+            this.PageNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Sample = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contentRichTextBox = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,36 +50,35 @@ namespace LogViewer
             this.viewerSplitContainer = new System.Windows.Forms.SplitContainer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.searchCountToolStripLabel = new System.Windows.Forms.ToolStripLabel();
-            this.PageNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Sample = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pageNoNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchResultsDataGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viewerSplitContainer)).BeginInit();
             this.viewerSplitContainer.Panel1.SuspendLayout();
             this.viewerSplitContainer.Panel2.SuspendLayout();
             this.viewerSplitContainer.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // downButton
+            // nextPageButton
             // 
-            this.downButton.Location = new System.Drawing.Point(75, 0);
-            this.downButton.Name = "downButton";
-            this.downButton.Size = new System.Drawing.Size(30, 22);
-            this.downButton.TabIndex = 1;
-            this.downButton.Text = ">";
-            this.downButton.UseVisualStyleBackColor = true;
-            this.downButton.Click += new System.EventHandler(this.downButton_Click);
+            this.nextPageButton.Location = new System.Drawing.Point(75, 0);
+            this.nextPageButton.Name = "nextPageButton";
+            this.nextPageButton.Size = new System.Drawing.Size(30, 22);
+            this.nextPageButton.TabIndex = 1;
+            this.nextPageButton.Text = ">";
+            this.nextPageButton.UseVisualStyleBackColor = true;
+            this.nextPageButton.Click += new System.EventHandler(this.nextPageButton_Click);
             // 
-            // upButton
+            // previousPageButton
             // 
-            this.upButton.Location = new System.Drawing.Point(39, 0);
-            this.upButton.Name = "upButton";
-            this.upButton.Size = new System.Drawing.Size(30, 22);
-            this.upButton.TabIndex = 2;
-            this.upButton.Text = "<";
-            this.upButton.UseVisualStyleBackColor = true;
-            this.upButton.Click += new System.EventHandler(this.upButton_Click);
+            this.previousPageButton.Location = new System.Drawing.Point(39, 0);
+            this.previousPageButton.Name = "previousPageButton";
+            this.previousPageButton.Size = new System.Drawing.Size(30, 22);
+            this.previousPageButton.TabIndex = 2;
+            this.previousPageButton.Text = "<";
+            this.previousPageButton.UseVisualStyleBackColor = true;
+            this.previousPageButton.Click += new System.EventHandler(this.previousPageButton_Click);
             // 
             // endButton
             // 
@@ -187,24 +188,39 @@ namespace LogViewer
             this.searchResultsDataGridView.ReadOnly = true;
             this.searchResultsDataGridView.RowHeadersVisible = false;
             this.searchResultsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.searchResultsDataGridView.Size = new System.Drawing.Size(1100, 123);
+            this.searchResultsDataGridView.Size = new System.Drawing.Size(1100, 140);
             this.searchResultsDataGridView.TabIndex = 10;
             this.searchResultsDataGridView.DoubleClick += new System.EventHandler(this.searchResultsDataGridView_DoubleClick);
             // 
+            // PageNo
+            // 
+            this.PageNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.PageNo.DataPropertyName = "PageNo";
+            this.PageNo.HeaderText = "PageNo";
+            this.PageNo.Name = "PageNo";
+            this.PageNo.ReadOnly = true;
+            this.PageNo.Width = 71;
+            // 
+            // Sample
+            // 
+            this.Sample.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Sample.DataPropertyName = "Sample";
+            this.Sample.HeaderText = "Sample";
+            this.Sample.Name = "Sample";
+            this.Sample.ReadOnly = true;
+            this.Sample.Width = 67;
+            // 
             // contentRichTextBox
             // 
-            this.contentRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.contentRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.contentRichTextBox.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contentRichTextBox.Location = new System.Drawing.Point(3, 35);
+            this.contentRichTextBox.Location = new System.Drawing.Point(0, 0);
             this.contentRichTextBox.Name = "contentRichTextBox";
             this.contentRichTextBox.ReadOnly = true;
-            this.contentRichTextBox.Size = new System.Drawing.Size(1100, 400);
+            this.contentRichTextBox.Size = new System.Drawing.Size(1106, 418);
             this.contentRichTextBox.TabIndex = 7;
             this.contentRichTextBox.Text = "";
             this.contentRichTextBox.WordWrap = false;
-            this.contentRichTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.contentRichTextBox_KeyDown_1);
             // 
             // menuStrip1
             // 
@@ -254,8 +270,10 @@ namespace LogViewer
             // 
             // viewerSplitContainer
             // 
+            this.viewerSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.viewerSplitContainer.BackColor = System.Drawing.SystemColors.ControlText;
-            this.viewerSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.viewerSplitContainer.Location = new System.Drawing.Point(0, 24);
             this.viewerSplitContainer.Name = "viewerSplitContainer";
             this.viewerSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -265,8 +283,8 @@ namespace LogViewer
             this.viewerSplitContainer.Panel1.BackColor = System.Drawing.SystemColors.Control;
             this.viewerSplitContainer.Panel1.Controls.Add(this.contentRichTextBox);
             this.viewerSplitContainer.Panel1.Controls.Add(this.homeButton);
-            this.viewerSplitContainer.Panel1.Controls.Add(this.upButton);
-            this.viewerSplitContainer.Panel1.Controls.Add(this.downButton);
+            this.viewerSplitContainer.Panel1.Controls.Add(this.previousPageButton);
+            this.viewerSplitContainer.Panel1.Controls.Add(this.nextPageButton);
             this.viewerSplitContainer.Panel1.Controls.Add(this.gotoPageButton);
             this.viewerSplitContainer.Panel1.Controls.Add(this.pageNoNumericUpDown);
             this.viewerSplitContainer.Panel1.Controls.Add(this.endButton);
@@ -279,8 +297,8 @@ namespace LogViewer
             this.viewerSplitContainer.Panel2.Controls.Add(this.searchResultsDataGridView);
             this.viewerSplitContainer.Panel2.Controls.Add(this.searchButton);
             this.viewerSplitContainer.Panel2.Controls.Add(this.searchPatternTextBox);
-            this.viewerSplitContainer.Size = new System.Drawing.Size(1106, 622);
-            this.viewerSplitContainer.SplitterDistance = 438;
+            this.viewerSplitContainer.Size = new System.Drawing.Size(1106, 594);
+            this.viewerSplitContainer.SplitterDistance = 418;
             this.viewerSplitContainer.TabIndex = 22;
             // 
             // toolStrip1
@@ -300,24 +318,6 @@ namespace LogViewer
             this.searchCountToolStripLabel.Size = new System.Drawing.Size(74, 22);
             this.searchCountToolStripLabel.Text = "searchCount";
             // 
-            // PageNo
-            // 
-            this.PageNo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.PageNo.DataPropertyName = "PageNo";
-            this.PageNo.HeaderText = "PageNo";
-            this.PageNo.Name = "PageNo";
-            this.PageNo.ReadOnly = true;
-            this.PageNo.Width = 71;
-            // 
-            // Sample
-            // 
-            this.Sample.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Sample.DataPropertyName = "Sample";
-            this.Sample.HeaderText = "Sample";
-            this.Sample.Name = "Sample";
-            this.Sample.ReadOnly = true;
-            this.Sample.Width = 67;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -326,11 +326,13 @@ namespace LogViewer
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.viewerSplitContainer);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(600, 684);
             this.Name = "MainForm";
             this.Text = "Log Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pageNoNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchResultsDataGridView)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -339,6 +341,7 @@ namespace LogViewer
             this.viewerSplitContainer.Panel1.PerformLayout();
             this.viewerSplitContainer.Panel2.ResumeLayout(false);
             this.viewerSplitContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.viewerSplitContainer)).EndInit();
             this.viewerSplitContainer.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -349,8 +352,8 @@ namespace LogViewer
 
         #endregion
 
-        private System.Windows.Forms.Button downButton;
-        private System.Windows.Forms.Button upButton;
+        private System.Windows.Forms.Button nextPageButton;
+        private System.Windows.Forms.Button previousPageButton;
         private System.Windows.Forms.Button endButton;
         private System.Windows.Forms.Button homeButton;
         private System.Windows.Forms.Button gotoPageButton;

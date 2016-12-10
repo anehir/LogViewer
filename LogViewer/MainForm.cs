@@ -80,19 +80,15 @@ namespace LogViewer
             }
         }
 
-        private void upButton_Click(object sender, EventArgs e)
+        private void previousPageButton_Click(object sender, EventArgs e)
         {
-            try
+            RunSafely(() =>
             {
                 LoadPage(logFile.ReadPreviousPage());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            });
         }
 
-        private void downButton_Click(object sender, EventArgs e)
+        private void nextPageButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -110,32 +106,26 @@ namespace LogViewer
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
+            RunSafely(() =>
             {
                 if (logFile != null)
                 {
                     logFile.Dispose();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
-        private void filePathLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-
+            });
         }
 
         private void gotoPageButton_Click(object sender, EventArgs e)
         {
-            int pageNo = (int)pageNoNumericUpDown.Value;
-            if (logFile != null && pageNo > 0 && pageNo <= logFile.PageCount)
+            RunSafely(() =>
             {
-                logFile.CurrentPage = pageNo;
-                LoadPage(logFile.ReadOnePage());
-            }
+                int pageNo = (int)pageNoNumericUpDown.Value;
+                if (logFile != null && pageNo > 0 && pageNo <= logFile.PageCount)
+                {
+                    logFile.CurrentPage = pageNo;
+                    LoadPage(logFile.ReadOnePage());
+                }
+            });
         }
 
         private void RunSafely(Action action)
@@ -183,20 +173,23 @@ namespace LogViewer
 
         private void searchResultsDataGridView_DoubleClick(object sender, EventArgs e)
         {
-            if (searchResultsDataGridView.SelectedRows.Count > 0)
+            RunSafely(() =>
             {
-                var results = (List<SearchResult>)searchResultsDataGridView.DataSource;
-                var index = searchResultsDataGridView.SelectedRows[0].Index;
-                var selectedResult = results[index];
-                var page = selectedResult.PageNo;
-                logFile.CurrentPage = page;
-                LoadPage(logFile.ReadOnePage());
-                pageNoNumericUpDown.Value = logFile.CurrentPage;
-                foreach (var result in FindAllResultsInThePage(results, index))
+                if (searchResultsDataGridView.SelectedRows.Count > 0)
                 {
-                    SetResultBackColor(result);
+                    var results = (List<SearchResult>)searchResultsDataGridView.DataSource;
+                    var index = searchResultsDataGridView.SelectedRows[0].Index;
+                    var selectedResult = results[index];
+                    var page = selectedResult.PageNo;
+                    logFile.CurrentPage = page;
+                    LoadPage(logFile.ReadOnePage());
+                    pageNoNumericUpDown.Value = logFile.CurrentPage;
+                    foreach (var result in FindAllResultsInThePage(results, index))
+                    {
+                        SetResultBackColor(result);
+                    }
                 }
-            }
+            });
         }
 
         private List<SearchResult> FindAllResultsInThePage(List<SearchResult> results, int index)
@@ -221,18 +214,6 @@ namespace LogViewer
             {
                 searchButton.Focus();
                 searchButton.PerformClick();
-            }
-        }
-
-        private void contentRichTextBox_KeyDown_1(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.PageDown)
-            {
-                downButton.PerformClick();
-            }
-            else if (e.KeyCode == Keys.PageUp)
-            {
-                upButton.PerformClick();
             }
         }
 
@@ -271,5 +252,16 @@ namespace LogViewer
             }
         }
 
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.PageDown)
+            {
+                nextPageButton.PerformClick();
+            }
+            else if (e.KeyCode == Keys.PageUp)
+            {
+                previousPageButton.PerformClick();
+            }
+        }
     }
 }

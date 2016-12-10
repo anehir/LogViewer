@@ -13,7 +13,13 @@ namespace LogViewer
 {
     public partial class MainForm : Form
     {
+        #region Fields
+
         LogFile logFile;
+
+        #endregion
+
+        #region Ctor
 
         public MainForm()
         {
@@ -24,35 +30,9 @@ namespace LogViewer
             searchResultsDataGridView.AutoGenerateColumns = false;
         }
 
-        private void OpenLogFile(string filePath)
-        {
-            try
-            {
-                if (logFile != null)
-                {
-                    logFile.Dispose();
-                }
-                searchResultsDataGridView.DataSource = null;
-                searchPatternTextBox.Text = string.Empty;
-                searchCountToolStripLabel.Text = string.Empty;
-                logFile = new LogFile(filePath);
-                pageCountTextBox.Text = logFile.PageCount.ToString();
-                pageNoNumericUpDown.Maximum = logFile.PageCount;
-                LoadPage(logFile.ReadOnePage());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
+        #endregion
 
-        private void LoadPage(string text)
-        {
-            contentRichTextBox.Text = text;
-            contentRichTextBox.RightMargin = TextRenderer.MeasureText(contentRichTextBox.Text, contentRichTextBox.Font).Width;
-            pageNoNumericUpDown.Value = logFile.CurrentPage;
-        }
-
+        #region Event Handlers
 
         private void homeButton_Click(object sender, EventArgs e)
         {
@@ -128,18 +108,6 @@ namespace LogViewer
             });
         }
 
-        private void RunSafely(Action action)
-        {
-            try
-            {
-                action();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
         private void searchButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -154,21 +122,6 @@ namespace LogViewer
                 }
             });
             Cursor.Current = Cursors.Default;
-        }
-
-        private void ResetContentBackColor()
-        {
-            contentRichTextBox.SelectAll();
-            contentRichTextBox.SelectionBackColor = contentRichTextBox.BackColor;
-            contentRichTextBox.DeselectAll();
-        }
-
-        private void SetResultBackColor(SearchResult result)
-        {
-            contentRichTextBox.SelectionStart = result.Index;
-            contentRichTextBox.SelectionLength = result.Length;
-            contentRichTextBox.SelectionBackColor = Color.Yellow;
-            contentRichTextBox.SelectionLength = 0;
         }
 
         private void searchResultsDataGridView_DoubleClick(object sender, EventArgs e)
@@ -190,22 +143,6 @@ namespace LogViewer
                     }
                 }
             });
-        }
-
-        private List<SearchResult> FindAllResultsInThePage(List<SearchResult> results, int index)
-        {
-            List<SearchResult> samePageResults = new List<SearchResult>();
-            samePageResults.Add(results[index]);
-            var page = results[index].PageNo;
-            for (int i = index + 1; i < results.Count && results[i].PageNo == page; i++)
-            {
-                samePageResults.Add(results[i]);
-            }
-            for (int i = index - 1; i >= 0 && results[i].PageNo == page; i--)
-            {
-                samePageResults.Add(results[i]);
-            }
-            return samePageResults;
         }
 
         private void searchPatternTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -263,5 +200,88 @@ namespace LogViewer
                 previousPageButton.PerformClick();
             }
         }
+
+        #endregion
+
+        #region Private Methods
+
+        private void RunSafely(Action action)
+        {
+            try
+            {
+                action();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void OpenLogFile(string filePath)
+        {
+            try
+            {
+                if (logFile != null)
+                {
+                    logFile.Dispose();
+                }
+                searchResultsDataGridView.DataSource = null;
+                searchPatternTextBox.Text = string.Empty;
+                searchCountToolStripLabel.Text = string.Empty;
+                logFile = new LogFile(filePath);
+                pageCountTextBox.Text = logFile.PageCount.ToString();
+                pageNoNumericUpDown.Maximum = logFile.PageCount;
+                LoadPage(logFile.ReadOnePage());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void LoadPage(string text)
+        {
+            contentRichTextBox.Text = text;
+            contentRichTextBox.RightMargin = TextRenderer.MeasureText(contentRichTextBox.Text, contentRichTextBox.Font).Width;
+            contentRichTextBox.SelectionStart = 0;
+            contentRichTextBox.SelectionLength = 1;
+            contentRichTextBox.ScrollToCaret();
+            contentRichTextBox.SelectionLength = 0;
+            pageNoNumericUpDown.Value = logFile.CurrentPage;
+        }
+
+        private void ResetContentBackColor()
+        {
+            contentRichTextBox.SelectAll();
+            contentRichTextBox.SelectionBackColor = contentRichTextBox.BackColor;
+            contentRichTextBox.DeselectAll();
+        }
+
+        private void SetResultBackColor(SearchResult result)
+        {
+            contentRichTextBox.SelectionStart = result.Index;
+            contentRichTextBox.SelectionLength = result.Length;
+            contentRichTextBox.SelectionBackColor = Color.Yellow;
+            contentRichTextBox.SelectionLength = 0;
+        }
+
+        private List<SearchResult> FindAllResultsInThePage(List<SearchResult> results, int index)
+        {
+            List<SearchResult> samePageResults = new List<SearchResult>();
+            samePageResults.Add(results[index]);
+            var page = results[index].PageNo;
+            for (int i = index + 1; i < results.Count && results[i].PageNo == page; i++)
+            {
+                samePageResults.Add(results[i]);
+            }
+            for (int i = index - 1; i >= 0 && results[i].PageNo == page; i--)
+            {
+                samePageResults.Add(results[i]);
+            }
+            return samePageResults;
+        }
+
+        #endregion
+
     }
 }

@@ -212,12 +212,14 @@ namespace LogViewer
             // 
             // contentRichTextBox
             // 
-            this.contentRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.contentRichTextBox.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contentRichTextBox.Location = new System.Drawing.Point(0, 0);
+            this.contentRichTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.contentRichTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.contentRichTextBox.Location = new System.Drawing.Point(3, 28);
             this.contentRichTextBox.Name = "contentRichTextBox";
             this.contentRichTextBox.ReadOnly = true;
-            this.contentRichTextBox.Size = new System.Drawing.Size(1106, 418);
+            this.contentRichTextBox.Size = new System.Drawing.Size(1106, 390);
             this.contentRichTextBox.TabIndex = 7;
             this.contentRichTextBox.Text = "";
             this.contentRichTextBox.WordWrap = false;

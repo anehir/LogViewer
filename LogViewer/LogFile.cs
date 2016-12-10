@@ -12,6 +12,7 @@ namespace LogViewer
         const int pageSize = 4096;
         byte[] fileBuffer = new byte[pageSize + 5];
         public int PageCount { get; set; }
+        bool utf8 = true;
 
         public int CurrentPage
         {
@@ -45,7 +46,7 @@ namespace LogViewer
         {
             ResetBuffer();
             int count = fs.Read(fileBuffer, 0, pageSize);
-            if (count == pageSize)
+            if (utf8 && count == pageSize)
             {
                 var utfByte = new UtfByte(fileBuffer[pageSize - 1]);
                 int missingCount = 0;
@@ -73,8 +74,15 @@ namespace LogViewer
                     fs.Seek(fs.Position - restOfBytesCount, SeekOrigin.Begin);
                 }
             }
-            byte[] cleanStart = fileBuffer.SkipWhile(b => new UtfByte(b).UtfByteType == UtfByteType.Trailing).ToArray();
-            return System.Text.Encoding.UTF8.GetString(cleanStart).Replace("\r\n", "\n");
+            if (utf8)
+            {
+                byte[] cleanStart = fileBuffer.SkipWhile(b => new UtfByte(b).UtfByteType == UtfByteType.Trailing).ToArray();
+                return System.Text.Encoding.UTF8.GetString(cleanStart).Replace("\r\n", "\n");
+            }
+            else
+            {
+                return Encoding.Default.GetString(fileBuffer).Replace("\r\n", "\n");
+            }
         }
 
         private void ResetBuffer()

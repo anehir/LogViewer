@@ -194,10 +194,12 @@ namespace LogViewer
             if (e.KeyCode == Keys.PageDown)
             {
                 nextPageButton.PerformClick();
+                e.Handled = true;
             }
             else if (e.KeyCode == Keys.PageUp)
             {
                 previousPageButton.PerformClick();
+                e.Handled = true;
             }
         }
 
@@ -242,11 +244,11 @@ namespace LogViewer
         private void LoadPage(string text)
         {
             contentRichTextBox.Text = text;
+            // set richtextbox length to the new text's length
             contentRichTextBox.RightMargin = TextRenderer.MeasureText(contentRichTextBox.Text, contentRichTextBox.Font).Width;
-            contentRichTextBox.SelectionStart = 0;
-            contentRichTextBox.SelectionLength = 1;
-            contentRichTextBox.ScrollToCaret();
+            // set caret position to the top
             contentRichTextBox.SelectionLength = 0;
+            contentRichTextBox.SelectionStart = 0;
             pageNoNumericUpDown.Value = logFile.CurrentPage;
         }
 

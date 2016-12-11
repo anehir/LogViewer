@@ -1,1 +1,9 @@
 E:\Codes\LogViewer\LogViewer\bin\Debug\LogViewer.exe.config
+E:\Codes\LogViewer\LogViewer\bin\Debug\LogViewer.exe
+E:\Codes\LogViewer\LogViewer\bin\Debug\LogViewer.pdb
+E:\Codes\LogViewer\LogViewer\obj\Debug\LogViewer.MainForm.resources
+E:\Codes\LogViewer\LogViewer\obj\Debug\LogViewer.Properties.Resources.resources
+E:\Codes\LogViewer\LogViewer\obj\Debug\LogViewer.csproj.GenerateResource.Cache
+E:\Codes\LogViewer\LogViewer\obj\Debug\LogViewer.exe
+E:\Codes\LogViewer\LogViewer\obj\Debug\LogViewer.pdb
+E:\Codes\LogViewer\LogViewer\obj\Debug\LogViewer.csprojResolveAssemblyReference.cache

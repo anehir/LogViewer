@@ -223,13 +223,7 @@ namespace LogViewer
         {
             try
             {
-                if (logFile != null)
-                {
-                    logFile.Dispose();
-                }
-                searchResultsDataGridView.DataSource = null;
-                searchPatternTextBox.Text = string.Empty;
-                searchCountToolStripLabel.Text = string.Empty;
+                ResetForm();
                 logFile = new LogFile(filePath);
                 pageCountTextBox.Text = logFile.PageCount.ToString();
                 pageNoNumericUpDown.Maximum = logFile.PageCount;
@@ -241,6 +235,19 @@ namespace LogViewer
             }
         }
 
+        private void ResetForm()
+        {
+            if (logFile != null)
+            {
+                logFile.Dispose();
+            }
+            logFile = null;
+            searchResultsDataGridView.DataSource = null;
+            searchPatternTextBox.Text = string.Empty;
+            searchCountToolStripLabel.Text = string.Empty;
+            LoadPage(string.Empty);
+        }
+
         private void LoadPage(string text)
         {
             contentRichTextBox.Text = text;
@@ -249,7 +256,10 @@ namespace LogViewer
             // set caret position to the top
             contentRichTextBox.SelectionLength = 0;
             contentRichTextBox.SelectionStart = 0;
-            pageNoNumericUpDown.Value = logFile.CurrentPage;
+            if (logFile != null && !logFile.IsDisposed)
+            {
+                pageNoNumericUpDown.Value = logFile.CurrentPage;
+            }
         }
 
         private void ResetContentBackColor()

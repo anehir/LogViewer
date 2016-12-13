@@ -14,6 +14,8 @@ namespace LogViewer
         public int PageCount { get; set; }
         bool utf8 = true;
 
+        public bool IsDisposed { get; set; }
+
         public int CurrentPage
         {
             get { return (int)Math.Ceiling((decimal)fs.Position / pageSize); }
@@ -34,10 +36,7 @@ namespace LogViewer
 
         public LogFile(string filePath)
         {
-            if (fs != null)
-            {
-                fs.Dispose();
-            }
+            this.IsDisposed = false;
             fs = File.OpenRead(filePath);
             PageCount = ((int)fs.Length / pageSize) + 1;
         }
@@ -115,6 +114,7 @@ namespace LogViewer
 
         public void Dispose()
         {
+            this.IsDisposed = true;
             if (fs != null)
             {
                 fs.Dispose();

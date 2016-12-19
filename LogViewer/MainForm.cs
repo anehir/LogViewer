@@ -116,7 +116,7 @@ namespace LogViewer
                 ResetContentBackColor();
                 if (logFile != null)
                 {
-                    var results = logFile.SearchWithinFile(searchPatternTextBox.Text);
+                    var results = logFile.SearchWithinFile(searchPatternTextBox.Text, regexCheckBox.Checked, caseSensitiveCheckBox.Checked);
                     searchResultsDataGridView.DataSource = results;
                     searchCountToolStripLabel.Text = results.Count.ToString() + " results";
                 }
@@ -295,5 +295,16 @@ namespace LogViewer
 
         #endregion
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            Application.DoEvents();
+            openToolStripMenuItem.PerformClick();
+            // Get the window to the front.
+            this.TopMost = true;
+            this.TopMost = false;
+
+            // 'Steal' the focus.
+            this.Activate();
+        }
     }
 }

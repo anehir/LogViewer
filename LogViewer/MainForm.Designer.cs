@@ -50,6 +50,8 @@ namespace LogViewer
             this.viewerSplitContainer = new System.Windows.Forms.SplitContainer();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.searchCountToolStripLabel = new System.Windows.Forms.ToolStripLabel();
+            this.regexCheckBox = new System.Windows.Forms.CheckBox();
+            this.caseSensitiveCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pageNoNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchResultsDataGridView)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -156,7 +158,7 @@ namespace LogViewer
             | System.Windows.Forms.AnchorStyles.Right)));
             this.searchPatternTextBox.Location = new System.Drawing.Point(3, 3);
             this.searchPatternTextBox.Name = "searchPatternTextBox";
-            this.searchPatternTextBox.Size = new System.Drawing.Size(1044, 20);
+            this.searchPatternTextBox.Size = new System.Drawing.Size(860, 20);
             this.searchPatternTextBox.TabIndex = 8;
             this.searchPatternTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.searchPatternTextBox_KeyDown);
             // 
@@ -296,6 +298,8 @@ namespace LogViewer
             // viewerSplitContainer.Panel2
             // 
             this.viewerSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.viewerSplitContainer.Panel2.Controls.Add(this.caseSensitiveCheckBox);
+            this.viewerSplitContainer.Panel2.Controls.Add(this.regexCheckBox);
             this.viewerSplitContainer.Panel2.Controls.Add(this.searchResultsDataGridView);
             this.viewerSplitContainer.Panel2.Controls.Add(this.searchButton);
             this.viewerSplitContainer.Panel2.Controls.Add(this.searchPatternTextBox);
@@ -320,6 +324,28 @@ namespace LogViewer
             this.searchCountToolStripLabel.Size = new System.Drawing.Size(74, 22);
             this.searchCountToolStripLabel.Text = "searchCount";
             // 
+            // regexCheckBox
+            // 
+            this.regexCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.regexCheckBox.AutoSize = true;
+            this.regexCheckBox.Location = new System.Drawing.Point(869, 6);
+            this.regexCheckBox.Name = "regexCheckBox";
+            this.regexCheckBox.Size = new System.Drawing.Size(76, 17);
+            this.regexCheckBox.TabIndex = 11;
+            this.regexCheckBox.Text = "Reg. Expr.";
+            this.regexCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // caseSensitiveCheckBox
+            // 
+            this.caseSensitiveCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.caseSensitiveCheckBox.AutoSize = true;
+            this.caseSensitiveCheckBox.Location = new System.Drawing.Point(951, 6);
+            this.caseSensitiveCheckBox.Name = "caseSensitiveCheckBox";
+            this.caseSensitiveCheckBox.Size = new System.Drawing.Size(96, 17);
+            this.caseSensitiveCheckBox.TabIndex = 12;
+            this.caseSensitiveCheckBox.Text = "Case Sensitive";
+            this.caseSensitiveCheckBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -334,6 +360,7 @@ namespace LogViewer
             this.Name = "MainForm";
             this.Text = "Log Viewer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pageNoNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchResultsDataGridView)).EndInit();
@@ -376,6 +403,8 @@ namespace LogViewer
         private System.Windows.Forms.ToolStripMenuItem searchVisibleToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn PageNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn Sample;
+        private System.Windows.Forms.CheckBox regexCheckBox;
+        private System.Windows.Forms.CheckBox caseSensitiveCheckBox;
     }
 }
 

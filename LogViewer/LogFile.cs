@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace LogViewer
 {
@@ -121,44 +122,86 @@ namespace LogViewer
             }
         }
 
-        public List<SearchResult> SearchWithinFile(string pattern)
+        public List<SearchResult> SearchWithinFile(string pattern, bool useRegex, bool caseSensitive)
         {
             var results = new List<SearchResult>();
             if (string.IsNullOrEmpty(pattern))
             {
                 return results;
             }
+
+            var regex = useRegex ? CompileRegex(pattern, caseSensitive) : null;
             int currentPage = this.CurrentPage;
             for (int pageNo = 1; pageNo <= this.PageCount; pageNo++)
             {
                 this.CurrentPage = pageNo;
                 string page = this.ReadOnePage();
-                int lastIndex = 0;
-                while (lastIndex < page.Length)
+                if (useRegex)
                 {
-                    lastIndex = page.IndexOf(pattern, lastIndex, StringComparison.InvariantCultureIgnoreCase);
-                    if (lastIndex < 0)
+                    var matches = regex.Matches(page);
+                    foreach (Match match in matches)
                     {
-                        break;
+                        results.Add(new SearchResult() { PageNo = pageNo, Index = match.Index, Length = match.Length, Sample = ExtractSample(page, match.Index, pattern.Length) });
                     }
-                    else
+                }
+                else
+                {
+                    var indices = SearchWithinPage(pattern, page, caseSensitive);
+                    foreach (var index in indices)
                     {
-                        var sampleStart = lastIndex - 20;
-                        if (sampleStart < 0)
-                        {
-                            sampleStart = 0;
-                        }
-                        var sampleLength = pattern.Length + 40;
-                        if (sampleStart + sampleLength > page.Length)
-                        {
-                            sampleLength = page.Length - sampleStart;
-                        }
-                        results.Add(new SearchResult() { PageNo = pageNo, Index = lastIndex, Length = pattern.Length, Sample = page.Substring(sampleStart, sampleLength) });
+                        results.Add(new SearchResult() { PageNo = pageNo, Index = index, Length = pattern.Length, Sample = ExtractSample(page, index, pattern.Length) });
                     }
-                    lastIndex += pattern.Length;
                 }
             }
             return results;
+        }
+
+        private static Regex CompileRegex(string pattern, bool caseSensitive)
+        {
+            Regex regex;
+            var regexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant;
+            if (!caseSensitive)
+            {
+                regexOptions |= RegexOptions.IgnoreCase;
+            }
+            regex = new Regex(pattern, regexOptions);
+            return regex;
+        }
+
+        private static List<int> SearchWithinPage(string pattern, string page, bool caseSensitive)
+        {
+            var indices = new List<int>();
+            int index = 0;
+            var comparisonType = caseSensitive ? StringComparison.InvariantCulture : StringComparison.InvariantCultureIgnoreCase;
+            while (index < page.Length)
+            {
+                index = page.IndexOf(pattern, index, comparisonType);
+                if (index < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    indices.Add(index);
+                }
+                index += pattern.Length;
+            }
+            return indices;
+        }
+
+        private static string ExtractSample(string page, int index, int patternLength)
+        {
+            var sampleStart = index - 20;
+            if (sampleStart < 0)
+            {
+                sampleStart = 0;
+            }
+            var sampleLength = patternLength + 40;
+            if (sampleStart + sampleLength > page.Length)
+            {
+                sampleLength = page.Length - sampleStart;
+            }
+            return page.Substring(sampleStart, sampleLength);
         }
     }
 }
